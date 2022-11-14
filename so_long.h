@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/14 13:16:57 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/14 13:51:12 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int validate_map(char *map);
 int validate_path(char *map);
 int get_map_width(char *map);
 int get_map_height(char *map);
+int	check_side_walls(char *map, int i);
+int	check_upper_lower_walls(char *map);
 
 // 
 

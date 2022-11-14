@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 08:17:57 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/14 13:15:35 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:04:51 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,24 @@ int validate_map(char *map)
 	const int map_width = get_map_width(map);
 	const int map_height = get_map_height(map);
 
+	if (map_width < 0 || map_height < 0)
+		return(MAP_ERR);
 	i = 0;
 	j = 0;
-	while (map[i] != '\n' && map[i] != '\0')
-	{
-		if (map[i] != 1)
-			return(MAP_ERR);
-		map_width++;
-		i++;
-	}
+	if (check_upper_lower_walls < 0)
+		return (MAP_ERR);
 	while (map[i] != '\0')
 	{
-		while (map[i] != '\n' && map[i] != '\0')
+		if(map[i] == '\n')
 		{
-			map_width++;
-			i++;
+			if (j != map_width || check_side_walls(map, i) < 0)
+				return(MAP_ERR);
+			j = 0;
 		}
-		map_height++;
-		while (map[j] != '\n')
-			j++;			
-	} 
+		i++;
+		j++;
+	}
+	return (0);
 }
 int get_map_width(char *map)
 {
@@ -75,6 +73,8 @@ int get_map_width(char *map)
 	i = 0;
 	while (map[i] != '\n' && map[i] != '\0')
 		i++;
+	if (i < 3)
+		return(MAP_ERR);
 	return(i);
 }
 
@@ -89,11 +89,44 @@ int get_map_height(char *map)
 	{
 		if (map[i] == '\n')
 			j++;
+		i++;
 	}
+	if (j < 3)
+		return(MAP_ERR);
 	return(j);
 }
 
 int validate_path(char *map)
 {
 	
+}
+
+int	check_side_walls(char *map, int i)
+{
+	if (map[i - 1] == 1 && (map[i + 1] == 1 || map[i + 1] == '\0'))
+		return (0);
+	return(MAP_ERR);
+}
+
+int	check_upper_lower_walls(char *map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i] != '\n')
+	{
+		if (map[i] != 1)
+			return (MAP_ERR);
+		i++;
+	}
+	i = ft_strlen(map);
+	if (map[i] != '\n')
+		i--;
+	while (map[i] != '\n')
+	{
+		if (map[i] != 1)
+			return (MAP_ERR);
+		i--;
+	}
+	return (0);
 }
