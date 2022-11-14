@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 20:49:21 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/14 10:56:40 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/14 19:04:26 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ int main (argc, argv)
 	void	*mlx_ptr;
 	void	*mlx_window;
 	int		map;
+	int		val;
 	
-	validate_input(argc, argv);
-	
+	val = validate_input(argc, argv[1]);
+	if (val < 0)
+		return (0);			
 	mlx_ptr = mlx_init();
 	if (mlx_ptr == NULL)
 		return(MLX_CREATION_ERR);
