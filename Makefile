@@ -6,7 +6,7 @@
 #    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/13 21:04:00 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/14 09:01:24 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,27 +17,28 @@ CFLAGS 	:=	-Wall -Werror -Wextra
 PRINTF 	:=	./printf/libftprintf.a
 
 SRC		:=	so_long.c \
+			validation.c \
 
 NAME 	= so_long
 
-OBJ		= $(subst .c,.o,$(SRC))
+OBJS	= $(subst .c,.o,$(SRC))
 
 all: $(NAME) 
 
-$(NAME): so_long
+#$(NAME): so_long
 
 so_long: $(PRINTF) 
 	$(CC) $(CFLAGS) $(SRC) $(PRINTF) -o $(NAME)
 
-$(NAME): so_long
-	@rm -f $(OBJ)
+$(NAME): $(OBJS)
+#	@rm -f $(OBJS)
 
 $(PRINTF):
 	@make -C ./printf
 	@rm -f $(OBJS)
 		 
 clean: 
-	@rm -f $(OBJ)
+	@rm -f $(OBJS)
 	@make clean -C ./printf
 
 fclean: clean
