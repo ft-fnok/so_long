@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:54:10 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/16 21:34:20 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/16 21:58:38 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**map2mem(int map_fd, char **map_ptr)
 
 	map_ptr = ft_calloc(1, sizeof(char *));
 	readresult = 0;
-	i = 0;
+	i = 1;
 	while (TRUE)
 	{
 		readresult = read(map_fd, buf, 1);
@@ -60,7 +60,7 @@ char	**map2mem(int map_fd, char **map_ptr)
 			return (map_ptr);
 		else if (buf == '\n') // extend map_ptr
 		{
-			map_ptr = extend_map(map_ptr);
+			map_ptr = extend_map(map_ptr, i);
 			i++;
 		}
 		else // extend ptr[i] by buf
@@ -68,4 +68,19 @@ char	**map2mem(int map_fd, char **map_ptr)
 	}
 }
 
-char **extend_map(char **map_ptr);
+char **extend_map(char **map_ptr, int lines)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = ft_calloc(lines, sizeof(char *));
+	while (map_ptr[i])
+	{
+		new[i] = map_ptr[i];
+		i++;
+	}
+	new[i] = ft_calloc(1, sizeof(char));
+	free(map_ptr);
+	return (new);
+}
