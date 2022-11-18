@@ -3,24 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
+#    By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/14 14:50:45 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/18 12:26:03 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := 		gcc
 
-CFLAGS 	:=	-Wall -Werror -Wextra -Lmlx -lmlx -framework OpenGL -framework AppKit
+CFLAGS 	:=	-Wall -Werror -Wextra #*-Lmlx -lmlx -framework OpenGL -framework AppKit#
 
 PRINTF 	:=	./printf/libftprintf.a
 
 LIBFT 	:=	./libft/libft.a
 
-SRC		:=	so_long.c \
-			validation.c \
-
+SRC		:=	validation-test.c \
+			validation-alt.c \
+			validation-helpers.c \
+			
 NAME 	= so_long
 
 OBJS	= $(subst .c,.o,$(SRC))

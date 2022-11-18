@@ -3,41 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   validation-helpers.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
+/*   By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:14:45 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/14 19:22:23 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/18 22:06:43 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	check_side_walls(char *map, int i)
+char **extend_map(char **map_ptr, int lines)
 {
-	if (map[i - 1] == 1 && (map[i + 1] == 1 || map[i + 1] == '\0'))
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = (char **)malloc((lines + 1) * sizeof(char *));
+	new[lines] = ft_calloc(1, sizeof(char));
+	while (i < lines)
+	{
+		new[i] = map_ptr[i];
+		i++;
+	}
+	free(map_ptr);
+	return (new);
+}
+
+int	check_side_walls(char **map, int i)
+{
+	if (map[i][0] == 1 && map[i][(ft_strlen(map[i]) - 1)] == 1)
 		return (0);
 	return (MAP_ERR);
 }
 
-int	check_upper_lower_walls(char *map)
+int	check_upper_lower_walls(char **map)
 {
 	int	i;
+	int j;
 
 	i = 0;
-	while (map[i] != '\n')
+	j = 0;
+	while (map[i][j] != '\n')
 	{
-		if (map[i] != 1)
+		if (map[i][j] != 1)
+			return (MAP_ERR);
+		j++;
+	}
+	i = get_map_height(map) - 1;
+	j = 0;
+	while (map[i][j] != '\n')
+	{
+		if (map[i][j] != 1)
 			return (MAP_ERR);
 		i++;
-	}
-	i = ft_strlen(map);
-	if (map[i] != '\n')
-		i--;
-	while (map[i] != '\n')
-	{
-		if (map[i] != 1)
-			return (MAP_ERR);
-		i--;
 	}
 	return (0);
 }
@@ -45,11 +63,12 @@ int	check_upper_lower_walls(char *map)
 int	check_file_extension(char *map_file)
 {
 	int	i;
-	int	j;
-
+	//int	j;
+	ft_printf("map-file name: %s\n", map_file);
 	i = ft_strlen(map_file) - 4;
-	if (ft_strncmp(map_file[i], ".ber", 4) != 0)
+	if (ft_strncmp(&map_file[i], ".ber", 4) != 0)
 		return (MAP_ERR);
+	ft_printf("map-file has .ber extension.\n");
 	return (0);
 }
 
@@ -79,19 +98,19 @@ int	check_setup(char *map)
 	return (0);
 }
 
-char	*map2mem(int map_fd)
-{
-	char	*map_mem;
-	char	*buf;
-	int		i;
+// char	*map2mem(int map_fd)
+// {
+// 	char	*map_mem;
+// 	char	*buf;
+// 	int		i;
 
-	i = 0;
-	map_mem = ft_calloc(1, sizeof(char));
-	while (read(map_fd, map_mem[ft_strlen(map_fd)], 1) != EOF)
-		map_mem = ft_strjoin(map_mem, '\0');
-	return (map_mem);
-}	
+// 	i = 0;
+// 	map_mem = ft_calloc(1, sizeof(char));
+// 	while (read(map_fd, map_mem[ft_strlen(map_fd)], 1) != EOF)
+// 		map_mem = ft_strjoin(map_mem, '\0');
+// 	return (map_mem);
+// }
 
 /**
- *  File needs to be read into memory. 
+ *  File needs to be read into memory.
  */

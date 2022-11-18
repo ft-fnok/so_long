@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
+/*   By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/14 17:41:51 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/18 21:42:34 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,28 @@
 // include for use of malloc
 # include <unistd.h>
 // include for use of minilibx functions
-# include <mlx.h>
+//# include <mlx.h>
 // include for use of read
 # include <fcntl.h>
-// 42 curriculum 
+// 42 curriculum
 # include "./libft/libft.h"
 # include "./printf/libftprintf.h"
 
 // initial checks
 int 	validate_input(int count, char *map);
-int		validate_map(char *map);
+int		validate_map(char **map);
 int		validate_path(char *map);
 int		get_map_width(char *map);
-int		get_map_height(char *map);
-int		check_side_walls(char *map, int i);
-int		check_upper_lower_walls(char *map);
+int		get_map_height(char **map);
+int		check_side_walls(char **map, int i);
+int		check_upper_lower_walls(char **map);
 int		check_file_extension(char *map);
-char	*map2mem(int map_fd);
 
-// 
+// reading map to memory
+char	**map2mem(int map_fd, char **map_ptr);
+char	**extend_map(char **map_ptr, int lines);
+
+
+//
 
 #endif
