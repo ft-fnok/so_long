@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:54:10 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 13:52:58 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 15:11:21 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	validate_input(int count, char *map_file)
 {
 	int		map_fd;
 	char	**map_ptr;
-	//counter for printf
 	
  	if (count != 2)
 	{
@@ -50,11 +49,11 @@ int	validate_input(int count, char *map_file)
 		free(map_ptr);
 		return (MAP_ERR);
 	}
-	// else if (validate_path(map_ptr) == PATH_ERR)
-	// {
-	// 	ft_printf("Error, invalid path.\n");
-	// 	return (PATH_ERR);
-	// }
+	else if (validate_path(map_ptr) == PATH_ERR)
+	{
+		ft_printf("Error, invalid path.\n");
+		return (PATH_ERR);
+	}
 	free(map_ptr);
 	return (0);
 }
@@ -86,12 +85,29 @@ char	**map2mem(int map_fd, char **map_ptr)
 	return(map_ptr);
 }
 
+char **extend_map(char **map_ptr, int lines)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = (char **)malloc((lines + 1) * sizeof(char *));
+	new[lines] = ft_calloc(1, sizeof(char));
+	while (i < lines)
+	{
+		new[i] = map_ptr[i];
+		i++;
+	}
+	free(map_ptr);
+	return (new);
+}
+
 int validate_map(char **map)
 {
 	int			i;
 	int			j;
 	const int	map_rows = get_map_height(map);
- 	const int 	map_cols = ft_strlen(map[0]); //get_map_width(map[0]);
+ 	const int 	map_cols = ft_strlen(map[0]);
 	
 	ft_printf("Cols: %i, rows: %i\n", map_cols, map_rows);
 
@@ -121,27 +137,7 @@ int validate_map(char **map)
 	return (0);
 }
 
-// int	get_map_width(char *map)
-// {
-// 	int i;
 
-// 	i = 0;
-// 	while (map[i] != '\n' && map[i] != '\0')
-// 		i++;
-// 	if (i < 3)
-// 		return(MAP_ERR);
-// 	return(i);
-// }
-
-int	get_map_height(char **map)
-{
-	int		i;
-
-	i = 0;
-	while (map[i] != NULL)
-		i++;
-	return(i);
-}
 int validate_chars(char **map)
 {
 	int i;
@@ -166,35 +162,5 @@ int validate_chars(char **map)
 		i++;
 	}
 	ft_printf("Chars validated.\n");
-	return (0);
-}
-
-int	validate_setting(char **map, int i, int j)
-{
-	int	player;
-	int	exit;
-	int	collectibles;
-
-	player = 0;
-	exit = 0;
-	collectibles = 0;
-	while (map[i] != NULL)
-	{
-		while ( map[i][j] != '\0')
-		{
-			if (map[i][j] == 'P' || map[i][j] == 'p')
-				player++;
-			else if (map[i][j] == 'C' || map[i][j] == 'c')
-				collectibles++;
-			else if (map[i][j] == 'E' || map[i][j] == 'e')
-				exit++;
-			j++;
-		}
-		j = 0;
-		i++;
-	}
-	if (player != 1 || exit != 1 || collectibles < 1)
-		return (MAP_ERR);
-	ft_printf("Setting validated.\n");
 	return (0);
 }

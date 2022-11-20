@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:32:54 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 11:52:04 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 15:20:53 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int main (int argc, char **argv)
 		ft_printf("MAP\n===========\n");
 		while (map[i] != NULL)
 		{
-			ft_printf("[%i]%s\n", (i + 1), map[i]);
+			ft_printf("[%i]%s\n", i, map[i]);
 			i++;
 		}
 	}

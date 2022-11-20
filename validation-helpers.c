@@ -6,28 +6,11 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:14:45 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 11:47:12 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 14:46:16 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-char **extend_map(char **map_ptr, int lines)
-{
-	char	**new;
-	int		i;
-
-	i = 0;
-	new = (char **)malloc((lines + 1) * sizeof(char *));
-	new[lines] = ft_calloc(1, sizeof(char));
-	while (i < lines)
-	{
-		new[i] = map_ptr[i];
-		i++;
-	}
-	free(map_ptr);
-	return (new);
-}
 
 int	check_side_walls(char **map, int i)
 {
@@ -102,19 +85,42 @@ int	check_setup(char *map)
 	return (0);
 }
 
-// char	*map2mem(int map_fd)
-// {
-// 	char	*map_mem;
-// 	char	*buf;
-// 	int		i;
+int	get_map_height(char **map)
+{
+	int		i;
 
-// 	i = 0;
-// 	map_mem = ft_calloc(1, sizeof(char));
-// 	while (read(map_fd, map_mem[ft_strlen(map_fd)], 1) != EOF)
-// 		map_mem = ft_strjoin(map_mem, '\0');
-// 	return (map_mem);
-// }
+	i = 0;
+	while (map[i] != NULL)
+		i++;
+	return(i);
+}
 
-/**
- *  File needs to be read into memory.
- */
+int	validate_setting(char **map, int i, int j)
+{
+	int	player;
+	int	exit;
+	int	collectibles;
+
+	player = 0;
+	exit = 0;
+	collectibles = 0;
+	while (map[i] != NULL)
+	{
+		while ( map[i][j] != '\0')
+		{
+			if (map[i][j] == 'P' || map[i][j] == 'p')
+				player++;
+			else if (map[i][j] == 'C' || map[i][j] == 'c')
+				collectibles++;
+			else if (map[i][j] == 'E' || map[i][j] == 'e')
+				exit++;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	if (player != 1 || exit != 1 || collectibles < 1)
+		return (MAP_ERR);
+	ft_printf("Setting validated.\n");
+	return (0);
+}

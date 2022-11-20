@@ -6,7 +6,7 @@
 #    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/20 09:54:05 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/20 14:50:00 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ LIBFT 	:=	./libft/libft.a
 SRC		:=	validation-test.c \
 			validation-alt.c \
 			validation-helpers.c \
+			path-validation.c \
 			
 NAME 	= so_long
 

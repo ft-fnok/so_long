@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 13:32:51 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 15:14:55 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,23 @@
 
 // initial checks
 int 	validate_input(int count, char *map);
+int 	validate_path(char **map_ptr);
 int		validate_map(char **map);
 int		validate_chars(char **map);
 int		validate_setting(char **map, int i, int j);
-int		validate_path(char *map);
-int		get_map_width(char *map);
+int		validate_path(char **map_ptr);
 int		get_map_height(char **map);
 int		check_side_walls(char **map, int i);
 int		check_upper_lower_walls(char **map);
 int		check_file_extension(char *map);
+int		*get_player_pos(int *get_player_pos,char **map_ptr);
+
 
 // reading map to memory
-//char	**map2mem(int map_fd, char **map_ptr);
 char	**map2mem(int map_fd, char **map_ptr);
 char	**extend_map(char **map_ptr, int lines);
 
 
-//
+// 
 
 #endif
