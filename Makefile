@@ -6,7 +6,7 @@
 #    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/20 15:27:13 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/20 19:39:08 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC		:=	main.c \
 			validation.c \
 			validation-helpers.c \
 			path-validation.c \
+			map_functions.c \
 			
 NAME 	= so_long
 

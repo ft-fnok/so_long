@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation-test.c                                  :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:32:54 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 15:20:53 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 19:49:00 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int main (int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	char	**map;
 	int		i;
@@ -31,5 +31,6 @@ int main (int argc, char **argv)
 		}
 	}
 	else
-		ft_printf("Error...\n");
+		error_interpreter(i);
+	return (i);
 }
