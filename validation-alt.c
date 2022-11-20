@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation-alt.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:54:10 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/18 21:41:21 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 12:02:24 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int	validate_input(int count, char *map_file)
 {
 	int		map_fd;
 	char	**map_ptr;
-
-	if (count != 2)
+	//counter for printf
+	
+ 	if (count != 2)
 	{
 		if (count == 1)
 			ft_printf("Error, no map provided.");
@@ -36,6 +37,11 @@ int	validate_input(int count, char *map_file)
 		ft_printf("Error, invalid map.\n");
 		free(map_ptr);
 		return (MAP_ERR);
+	}
+	else if (validate_setting(map_ptr) == MAP_ERR)
+	{
+
+		
 	}
 	// else if (validate_path(map_ptr) == PATH_ERR)
 	// {
@@ -78,20 +84,31 @@ int validate_map(char **map)
 {
 	int			i;
 	int			j;
-	const int 	map_cols = ft_strlen(map[0]); //get_map_width(map[0]);
-	const int 	map_rows = get_map_height(map);
+	const int	map_rows = get_map_height(map);
+ 	const int 	map_cols = ft_strlen(map[0]); //get_map_width(map[0]);
+	
 	ft_printf("Cols: %i, rows: %i\n", map_cols, map_rows);
 
 	if (map_cols < 3 || map_rows < 3)
 		return(MAP_ERR);
 	i = 0;
 	j = 0;
-	if (check_upper_lower_walls < 0)
+	if (check_upper_lower_walls(map) < 0)
 		return (MAP_ERR);
-	while (map[i])
+	ft_printf("Upper / lower wall - verified.\n");
+	while (map[i] != NULL)
 	{
-		if(ft_strlen(map[i]) != (size_t) map_cols || check_side_walls(map, i) < 0)
-				return(MAP_ERR);
+		if(ft_strlen(map[i]) != (size_t) map_cols)
+		{
+			ft_printf("Lines not of equal length.\n");
+			return(MAP_ERR);
+		}
+		else if (check_side_walls(map, i) < 0)
+		{
+			ft_printf("Side walls check failed.\n");
+			return(MAP_ERR);
+		}
+			
 		i++;
 	}
 	return (0);
@@ -111,10 +128,46 @@ int validate_map(char **map)
 
 int	get_map_height(char **map)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	while (map[i][0] != 0)
+	while (map[i] != NULL)
 		i++;
 	return(i);
 }
+
+int validate_setting(char **map)
+{
+	int	i;
+	int j;
+	int	player;
+	int	exit;
+	int	collectibles;
+
+	i = 1;
+	j = 0;
+	player = 0;
+	exit = 0;
+	collectibles = 0;
+
+	while (map[i] != NULL)
+	{
+		while ( map[i][j] != '\0')
+		{
+			if (map[i][j] == P)
+				player++;
+			else if (map[i][j] == C)
+				collectibles++;
+			else if (map[i][j] == E)
+				exit++;
+			j++;
+		}
+		i++;
+	}
+	if (player != 1 || exit != 1)
+		return (MAP_ERR);
+	else if (collectibles < 1)
+		return (MAP_ERR);
+	return (0);
+}
+	

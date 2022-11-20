@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+         #
+#    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/18 12:26:03 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/20 09:54:05 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,11 +47,13 @@ $(LIBFT):
 clean: 
 	@rm -f $(OBJS)
 	@make clean -C ./printf
+	@make clean -C ./libft
 
 fclean: clean
 	@rm -f $(NAME)
 	@rm -f a.out
 	@make fclean -C ./printf
+	@make fclean -C ./libft
 
 re: fclean all
 

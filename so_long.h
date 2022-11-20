@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/18 21:42:34 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 11:22:45 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		check_upper_lower_walls(char **map);
 int		check_file_extension(char *map);
 
 // reading map to memory
+//char	**map2mem(int map_fd, char **map_ptr);
 char	**map2mem(int map_fd, char **map_ptr);
 char	**extend_map(char **map_ptr, int lines);
 

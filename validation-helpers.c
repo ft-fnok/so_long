@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation-helpers.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlalleik <nlalleik@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:14:45 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/18 22:06:43 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 11:47:12 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char **extend_map(char **map_ptr, int lines)
 
 int	check_side_walls(char **map, int i)
 {
-	if (map[i][0] == 1 && map[i][(ft_strlen(map[i]) - 1)] == 1)
+	if (map[i][0] == '1' && map[i][(ft_strlen(map[i]) - 1)] == '1')
 		return (0);
 	return (MAP_ERR);
 }
@@ -43,19 +43,25 @@ int	check_upper_lower_walls(char **map)
 
 	i = 0;
 	j = 0;
-	while (map[i][j] != '\n')
+	while (map[i][j] != '\0')
 	{
-		if (map[i][j] != 1)
+		if (map[i][j] != '1')
+		{
+			ft_printf("Upper wall check failed: %c\n", map[i][j]);
 			return (MAP_ERR);
+		}
 		j++;
 	}
 	i = get_map_height(map) - 1;
 	j = 0;
-	while (map[i][j] != '\n')
+	while (map[i][j] != '\0')
 	{
-		if (map[i][j] != 1)
+		if (map[i][j] != '1')
+		{
+			ft_printf("Lower wall check failed.\n");
 			return (MAP_ERR);
-		i++;
+		}
+		j++;
 	}
 	return (0);
 }
@@ -63,8 +69,6 @@ int	check_upper_lower_walls(char **map)
 int	check_file_extension(char *map_file)
 {
 	int	i;
-	//int	j;
-	ft_printf("map-file name: %s\n", map_file);
 	i = ft_strlen(map_file) - 4;
 	if (ft_strncmp(&map_file[i], ".ber", 4) != 0)
 		return (MAP_ERR);
