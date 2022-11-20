@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 19:50:09 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 22:28:18 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,20 @@
 // include for use of malloc
 # include <unistd.h>
 // include for use of minilibx functions
-//# include <mlx.h>
+# include <mlx.h>
 // include for use of read
 # include <fcntl.h>
 // 42 curriculum
 # include "./libft/libft.h"
 # include "./printf/libftprintf.h"
+
+struct s_solong
+{
+	char	**map;
+	int		*player_pos;
+	int		collectibles;
+	int		moves;
+} s_solong;
 
 // initial checks
 int		validate_input(int count, char *map);
@@ -58,5 +66,9 @@ int		check_flooded_map(char **map_ptr);
 // reading map to memory
 char	**map2mem(int map_fd, char **map_ptr);
 char	**extend_map(char **map_ptr, int lines);
+
+// game functions
+int	so_long(int height, int width);
+
 
 #endif

@@ -6,13 +6,15 @@
 #    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/20 19:39:08 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/20 22:13:57 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := 		gcc
 
-CFLAGS 	:=	-Wall -Werror -Wextra #*-Lmlx -lmlx -framework OpenGL -framework AppKit#
+CFLAGS 	:=	-Wall -Werror -Wextra 
+
+LIBS	:=	-Lmlx -lmlx -framework OpenGL -framework AppKit
 
 PRINTF 	:=	./printf/libftprintf.a
 
@@ -23,28 +25,35 @@ SRC		:=	main.c \
 			validation-helpers.c \
 			path-validation.c \
 			map_functions.c \
+			so_long.c
 			
 NAME 	= so_long
 
-OBJS	= $(subst .c,.o,$(SRC))
+OBJ		= $(SRC:.c=.o)
 
-all: $(NAME) 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+#$(subst .c,.o,$(SRC))
 
-#$(NAME): so_long
+all: prv_libs $(NAME)
 
-so_long: $(PRINTF) $(LIBFT)
-	$(CC) $(CFLAGS) $(SRC) $(PRINTF) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(LIBFT) $(PRINTF) $(LIBS) $(OBJ) -o $(NAME)
 
-$(NAME): $(OBJS) 
-#	@rm -f $(OBJS)
+#$(NAME): 
+	
+prv_libs: $(PRINTF) $(LIBFT)
+#	$(CC) $(CFLAGS) $(SRC) $(PRINTF) $(LIBFT) -o $(NAME)
+
+#$(NAME): $(OBJ) 
 
 $(PRINTF):
 	@make -C ./printf
-	@rm -f $(OBJS)
+#	@rm -f $(OBJS)
 	
 $(LIBFT):
 	@make -C ./libft
-	@rm -f $(OBJS)
+#	@rm -f $(OBJS)
 	
 clean: 
 	@rm -f $(OBJS)
