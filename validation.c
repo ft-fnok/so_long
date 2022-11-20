@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation.c                                       :+:      :+:    :+:   */
+/*   validation-alt.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/14 08:17:57 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/14 17:40:24 by nlalleik         ###   ########.fr       */
+/*   Created: 2022/11/16 20:54:10 by nlalleik          #+#    #+#             */
+/*   Updated: 2022/11/20 15:11:21 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,38 @@
 int	validate_input(int count, char *map_file)
 {
 	int		map_fd;
-//	char	*buf;
-	char	*map_ptr;
-
-	if (count != 2)
-	{	
+	char	**map_ptr;
+	
+ 	if (count != 2)
+	{
 		if (count == 1)
 			ft_printf("Error, no map provided.");
 		else
 			ft_printf("Error, too many inputs.");
 		return (INPUT_ERR);
 	}
-	if (check_file_extension(char *map_file) < 0)
+	if (check_file_extension(map_file) < 0)
 		return (MAP_ERR);
-//	buf = ft_calloc(ft_strlen(map), sizeof(char));
 	map_fd = open(map_file, O_RDONLY);
-	map_ptr = map2mem(map_fd);
-//	read(fd_map, buf, ft_strlen(map));
+	map_ptr = ft_calloc(1, sizeof(char *));
+	map_ptr = map2mem(map_fd, map_ptr);
+	ft_printf("FD: %i -- Map loaded to memory.\n", map_fd);
 	if (validate_map(map_ptr) == MAP_ERR)
 	{
 		ft_printf("Error, invalid map.\n");
+		free(map_ptr);
+		return (MAP_ERR);
+	}
+	else if (validate_chars(map_ptr) == MAP_ERR)
+	{
+		ft_printf("Error, invalid char.\n");
+		free(map_ptr);
+		return (MAP_ERR);
+	}
+	else if (validate_setting(map_ptr, 1, 0) == MAP_ERR)
+	{
+		ft_printf("Error, invalid setting.\n");
+		free(map_ptr);
 		return (MAP_ERR);
 	}
 	else if (validate_path(map_ptr) == PATH_ERR)
@@ -42,67 +54,113 @@ int	validate_input(int count, char *map_file)
 		ft_printf("Error, invalid path.\n");
 		return (PATH_ERR);
 	}
+	free(map_ptr);
 	return (0);
 }
 
-int validate_map(char *map)
+char	**map2mem(int map_fd, char **map_ptr)
+{
+	char	*buf;
+	int		readresult;
+	int		i;
+
+	readresult = 0;
+	i = 0;
+	buf = ft_calloc(2, sizeof(char));
+	map_ptr[0] = ft_calloc(1, sizeof(char));
+	while (TRUE)
+	{
+		readresult = read(map_fd, buf, 1);
+		if (readresult != 1)
+			break;
+		else if (*buf == '\n') // extend map_ptr
+		{
+			i++;
+			map_ptr = extend_map(map_ptr, i);
+		}
+		else // extend ptr[i] by buf
+			map_ptr[i] = ft_strjoin(map_ptr[i], buf);
+	}
+	free(buf);
+	return(map_ptr);
+}
+
+char **extend_map(char **map_ptr, int lines)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = (char **)malloc((lines + 1) * sizeof(char *));
+	new[lines] = ft_calloc(1, sizeof(char));
+	while (i < lines)
+	{
+		new[i] = map_ptr[i];
+		i++;
+	}
+	free(map_ptr);
+	return (new);
+}
+
+int validate_map(char **map)
 {
 	int			i;
 	int			j;
-	const int 	map_width = get_map_width(map);
-	const int 	map_height = get_map_height(map);
+	const int	map_rows = get_map_height(map);
+ 	const int 	map_cols = ft_strlen(map[0]);
+	
+	ft_printf("Cols: %i, rows: %i\n", map_cols, map_rows);
 
-	if (map_width < 0 || map_height < 0)
+	if (map_cols < 3 || map_rows < 3)
 		return(MAP_ERR);
 	i = 0;
 	j = 0;
-	if (check_upper_lower_walls < 0)
+	if (check_upper_lower_walls(map) < 0)
 		return (MAP_ERR);
-	while (map[i] != '\0')
+	ft_printf("Upper / lower wall - verified.\n");
+	while (map[i] != NULL)
 	{
-		if(map[i] == '\n')
+		if(ft_strlen(map[i]) != (size_t) map_cols)
 		{
-			if (j != map_width || check_side_walls(map, i) < 0)
-				return(MAP_ERR);
-			j = 0;
+			ft_printf("Lines not of equal length.\n");
+			return(MAP_ERR);
 		}
+		else if (check_side_walls(map, i) < 0)
+		{
+			ft_printf("Side walls check failed.\n");
+			return(MAP_ERR);
+		}
+			
 		i++;
-		j++;
 	}
+	ft_printf("Map validated.\n");
 	return (0);
 }
 
-int	get_map_width(char *map)
-{
-	int i;
-	
-	i = 0;
-	while (map[i] != '\n' && map[i] != '\0')
-		i++;
-	if (i < 3)
-		return(MAP_ERR);
-	return(i);
-}
 
-int	get_map_height(char *map)
+int validate_chars(char **map)
 {
 	int i;
 	int j;
-	
-	i = 0;
-	j = 1;
-	while (map[i] != '\0')
+
+	i = 1;
+	j = 0;
+	while(map[i] != NULL)
 	{
-		if (map[i] == '\n')
-			j++;
+		while(map[i][j] != '\0')
+		{
+			if (map[i][j] != '1' && map[i][j] != '0' &&
+				map[i][j] != 'P' && map[i][j] != 'E' && map[i][j] != 'C' &&
+				map[i][j] != 'p' && map[i][j] != 'e' && map[i][j] != 'c')
+			{
+				ft_printf("Wrong char detected.");
+				return(MAP_ERR);
+			}
+		j++;
+		}
+		j = 0;
 		i++;
 	}
-	if (j < 3)
-		return(MAP_ERR);
-	return(j);
-}
-
-int	validate_path(char *map)
-{
-
+	ft_printf("Chars validated.\n");
+	return (0);
 }
