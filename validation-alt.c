@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:54:10 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 12:02:24 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 13:52:58 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,23 @@ int	validate_input(int count, char *map_file)
 		free(map_ptr);
 		return (MAP_ERR);
 	}
-	else if (validate_setting(map_ptr) == MAP_ERR)
+	else if (validate_chars(map_ptr) == MAP_ERR)
 	{
-
-		
+		ft_printf("Error, invalid char.\n");
+		free(map_ptr);
+		return (MAP_ERR);
+	}
+	else if (validate_setting(map_ptr, 1, 0) == MAP_ERR)
+	{
+		ft_printf("Error, invalid setting.\n");
+		free(map_ptr);
+		return (MAP_ERR);
 	}
 	// else if (validate_path(map_ptr) == PATH_ERR)
 	// {
 	// 	ft_printf("Error, invalid path.\n");
 	// 	return (PATH_ERR);
 	// }
-	ft_printf("Map validated.\n");
 	free(map_ptr);
 	return (0);
 }
@@ -111,6 +117,7 @@ int validate_map(char **map)
 			
 		i++;
 	}
+	ft_printf("Map validated.\n");
 	return (0);
 }
 
@@ -135,39 +142,59 @@ int	get_map_height(char **map)
 		i++;
 	return(i);
 }
-
-int validate_setting(char **map)
+int validate_chars(char **map)
 {
-	int	i;
+	int i;
 	int j;
+
+	i = 1;
+	j = 0;
+	while(map[i] != NULL)
+	{
+		while(map[i][j] != '\0')
+		{
+			if (map[i][j] != '1' && map[i][j] != '0' &&
+				map[i][j] != 'P' && map[i][j] != 'E' && map[i][j] != 'C' &&
+				map[i][j] != 'p' && map[i][j] != 'e' && map[i][j] != 'c')
+			{
+				ft_printf("Wrong char detected.");
+				return(MAP_ERR);
+			}
+		j++;
+		}
+		j = 0;
+		i++;
+	}
+	ft_printf("Chars validated.\n");
+	return (0);
+}
+
+int	validate_setting(char **map, int i, int j)
+{
 	int	player;
 	int	exit;
 	int	collectibles;
 
-	i = 1;
-	j = 0;
 	player = 0;
 	exit = 0;
 	collectibles = 0;
-
 	while (map[i] != NULL)
 	{
 		while ( map[i][j] != '\0')
 		{
-			if (map[i][j] == P)
+			if (map[i][j] == 'P' || map[i][j] == 'p')
 				player++;
-			else if (map[i][j] == C)
+			else if (map[i][j] == 'C' || map[i][j] == 'c')
 				collectibles++;
-			else if (map[i][j] == E)
+			else if (map[i][j] == 'E' || map[i][j] == 'e')
 				exit++;
 			j++;
 		}
+		j = 0;
 		i++;
 	}
-	if (player != 1 || exit != 1)
+	if (player != 1 || exit != 1 || collectibles < 1)
 		return (MAP_ERR);
-	else if (collectibles < 1)
-		return (MAP_ERR);
+	ft_printf("Setting validated.\n");
 	return (0);
 }
-	

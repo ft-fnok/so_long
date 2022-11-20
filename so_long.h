@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 11:22:45 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/20 13:32:51 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 // initial checks
 int 	validate_input(int count, char *map);
 int		validate_map(char **map);
+int		validate_chars(char **map);
+int		validate_setting(char **map, int i, int j);
 int		validate_path(char *map);
 int		get_map_width(char *map);
 int		get_map_height(char **map);
