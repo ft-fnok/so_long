@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 14:48:05 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 19:47:43 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/21 17:56:41 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	validate_path(char **map_ptr)
 	int	*player_pos;
 
 	player_pos = (int *)malloc(2 * sizeof(int));
-	player_pos = get_player_pos(player_pos, map_ptr);
+	get_player_pos(player_pos, map_ptr);
 	pour_water(player_pos[0], player_pos[1], map_ptr);
 	free(player_pos);
 	return (check_flooded_map(map_ptr));
 }
 
-int	*get_player_pos(int *player_pos, char **map_ptr)
+void	get_player_pos(int *player_pos, char **map_ptr)
 {
 	int	y;
 	int	x;
@@ -45,7 +45,6 @@ int	*get_player_pos(int *player_pos, char **map_ptr)
 		x = 0;
 		y++;
 	}
-	return (player_pos);
 }
 
 void	pour_water(int pos_y, int pos_x, char **map_ptr)

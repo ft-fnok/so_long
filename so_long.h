@@ -6,7 +6,7 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:35:37 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 22:28:18 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:26:20 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,28 @@
 # define WIN_WTH			800
 # define TRUE				1
 # define FALSE				0
-# define INPUT_ERR			-10
-# define INPUT_ERR_EXT		-11
-# define MAP_ERR_CHAR		-20
-# define MAP_ERR_RECT		-21
-# define MAP_ERR_WALL		-22
-# define MAP_ERR_SET		-23
-# define PATH_ERR			-30
-# define MLX_CREATION_ERR	-40
+// # define INPUT_ERR			-10
+// # define INPUT_ERR_EXT		-11
+// # define MAP_ERR_CHAR		-20
+// # define MAP_ERR_RECT		-21
+// # define MAP_ERR_WALL		-22
+// # define MAP_ERR_SET		-23
+// # define PATH_ERR			-30
+// # define MLX_CREATION_ERR	-40
+
+// enums
+enum program_codes {
+		ON_DESTROY			=	17,
+		ON_KEYDOWN			=	2,
+		INPUT_ERR 			=	-10,
+		INPUT_ERR_EXT		=	-11,
+		MAP_ERR_CHAR		=	-20,
+		MAP_ERR_RECT		=	-21,
+		MAP_ERR_WALL		=	-22,
+		MAP_ERR_SET			=	-23,
+		PATH_ERR			=	-30,
+		MLX_CREATION_ERR	=	-40,
+};
 
 # include <stdio.h>
 // include for use of malloc
@@ -36,13 +50,26 @@
 # include "./libft/libft.h"
 # include "./printf/libftprintf.h"
 
-struct s_solong
+// typedefs
+
+typedef struct	s_data
 {
 	char	**map;
-	int		*player_pos;
+	int		player_y;
+	int		player_x;
 	int		collectibles;
 	int		moves;
-} s_solong;
+	void	*mlx_ptr;
+	void	*mlx_win;
+}				t_data;
+
+typedef struct	s_img {
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}				t_img;
 
 // initial checks
 int		validate_input(int count, char *map);
@@ -59,7 +86,7 @@ void	error_interpreter(int err);
 
 // path verification
 int		validate_path(char **map_ptr);
-int		*get_player_pos(int *player_pos, char **map_ptr);
+void	get_player_pos(int *player_pos, char **map_ptr);
 void	pour_water(int pos_y, int pos_x, char **map_ptr);
 int		check_flooded_map(char **map_ptr);
 
@@ -68,7 +95,16 @@ char	**map2mem(int map_fd, char **map_ptr);
 char	**extend_map(char **map_ptr, int lines);
 
 // game functions
-int	so_long(int height, int width);
-
+void	init_data(t_data *data);
+int		so_long(t_data *data);
+void	better_mlx_pixel_put(t_img *data, int x, int y, int color);
+int		handle_no_event(void);
+int		handle_input(int keycode, t_data *data);
+void	move_up(t_data *data);
+void	move_down(t_data *data);
+void	move_left(t_data *data);
+void	move_right(t_data *data);
+void	init_collectibles(t_data *data);
+void	player_yx(t_data *data);
 
 #endif

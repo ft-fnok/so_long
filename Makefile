@@ -6,13 +6,14 @@
 #    By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/02 16:09:34 by nlalleik          #+#    #+#              #
-#    Updated: 2022/11/20 22:13:57 by nlalleik         ###   ########.fr        #
+#    Updated: 2022/11/21 19:12:00 by nlalleik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := 		gcc
 
-CFLAGS 	:=	-Wall -Werror -Wextra 
+CFLAGS 	:=	-Wall -Werror -Wextra -fsanitize=address -g
+
 
 LIBS	:=	-Lmlx -lmlx -framework OpenGL -framework AppKit
 
@@ -25,7 +26,8 @@ SRC		:=	main.c \
 			validation-helpers.c \
 			path-validation.c \
 			map_functions.c \
-			so_long.c
+			so_long.c \
+			solong_functions.c \
 			
 NAME 	= so_long
 

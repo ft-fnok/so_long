@@ -6,29 +6,35 @@
 /*   By: nlalleik <nlalleik@students.42wolfsburg.de +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 20:49:21 by nlalleik          #+#    #+#             */
-/*   Updated: 2022/11/20 22:32:54 by nlalleik         ###   ########.fr       */
+/*   Updated: 2022/11/21 17:34:25 by nlalleik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	so_long(int height, int width)
+int	so_long(t_data *data)
 {
-	void	*mlx_ptr;
-	void	*mlx_window;
+	// t_data	data;
+	// void	*mlx_ptr;
+	// void	*mlx_window;
 	
-	mlx_ptr = mlx_init();
-	if (mlx_ptr == NULL)
+	data->mlx_ptr = mlx_init();
+	if (data->mlx_ptr == NULL)
 		return(MLX_CREATION_ERR);
-	mlx_window = mlx_new_window(mlx_ptr, (height * 80), (width * 80), "so long ...");
-	if (mlx_window == NULL)
+	data->mlx_win = mlx_new_window(data->mlx_ptr, WIN_HGH, WIN_HGH, "so long ...");
+	if (data->mlx_win == NULL)
 	{
-		free(mlx_window);
-		return(MLX_CREATION_ERR);
+		free(data->mlx_win); //exchange for destruct-function later
+ 		return(MLX_CREATION_ERR);
 	}
-	mlx_loop(mlx_ptr);
+	//data->player_pos = get_player_pos(data->player_pos, data->map);
+	mlx_loop_hook(data->mlx_ptr, &handle_no_event, &data);
+	mlx_key_hook(data->mlx_win, &handle_input, &data);
+	//mlx_hook(data->mlx_win, ON_DESTROY, 0, &handle_input, &data);
+	//mlx_hook(data->mlx_win, ON_KEYDOWN, 0, &handle_input, &data);
+	mlx_loop(data->mlx_ptr);
+	mlx_destroy_window(data->mlx_ptr, data->mlx_win);
+	free(data->mlx_ptr);
 
-	mlx_destroy_window(mlx_ptr, mlx_window);
-	free(mlx_ptr);
 	return(0);
 }
